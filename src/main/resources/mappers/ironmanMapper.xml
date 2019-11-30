@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 实现ironmanDao接口的实现类。根据namespace值（包名+类名）匹配 -->
+<mapper namespace="tiga.hotal.dao.ironmanDao">
+	<!-- id与dao接口方法名一致 -->
+	<insert id="insert_ironman" parameterType="ironman">
+		insert into
+		ironman(stuNo,stuName,stuMajor,stuCourse,stuScore)
+		values(#{stuNo},#{stuName},#{stuMajor},#{stuCourse},#{stuScore})
+	</insert>
+
+	<delete id="deleteByStuNo" parameterType="int">
+		delete from ironman
+		where stuNo=#{stuNo}
+	</delete>
+
+	<select id="selectByStuNo" parameterType="int"
+		resultType="ironman">
+		select * from ironman where stuNo=#{stuNo}
+	</select>
+
+	<update id="updateByStuNo" parameterType="ironman">
+		update ironman set
+		stuScore=#{stuScore} where stuNo=#{stuNo}
+	</update>
+
+	<select id="loadAll" resultType="ironman">
+		select * from ironman
+	</select>
+</mapper>

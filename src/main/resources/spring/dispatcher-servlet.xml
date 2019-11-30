@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- 1.springmvc驱动注解 -->
+	<mvc:annotation-driven />
+
+	<!-- 2.部件扫描，扫描该包下的所有类，把带有@Controller注解的类注册到spring mvc容器中 -->
+	<!-- 优点：复用Controller对象，每一次访问，所访问的控制器，可能都是同样的一个，这样，在海量的访问下，可以不需要构建大量的对象，实现提高系统效率 -->
+	<!-- spring mvc容器只定义控制器，其他需在spring容器中定义 -->
+	<context:component-scan
+		base-package="tiga.hotal.controller" />
+
+	<!-- 3.视图解析器：解析@Controller类的返回String,就不需要带上返回网址的前缀与后缀,统一指定 -->
+	<bean id="vireResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- jsp文件均放在下列jsps目录下 -->
+		<property name="prefix" value="/WEB-INF/jsps/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- 4.指定静态资源路径。/代表webapp /resources/ 代表webapp下的resources文件夹下的文件 /**表示该文件夹下的所有子文件包括子文件的子文件 -->
+	<mvc:resources location="/resources/"
+		mapping="/resources/**" />
+</beans>

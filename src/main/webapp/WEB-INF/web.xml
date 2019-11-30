@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+
+	<!-- 0.指定服务启动后的欢迎页面 -->
+	<welcome-file-list>
+		<!-- 为了应用启动后的界面既是欢迎页，也是首页，以及方便后续跳转会首页，设置欢迎界面为WEB-INF下的界面 -->
+		<welcome-file>./WEB-INF/jsps/main.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- 1.springmvc通过servlet映射配置启动 -->
+	<!-- 1.1指定springmvc配置文件所在地 -->
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<!-- classpath:指向编译后的文件夹 /WEB-INF/classes/ -->
+			<param-value>classpath:spring/dispatcher-servlet.xml</param-value>
+		</init-param>
+		<!-- 在应用程序启动的时候自动启动 -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- 1.2 springmvc的servlet映射配置 -->
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<!-- / 即过滤所有servlet请求，servlet访问都需要经过springmvc处理过 -->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<!-- 2. 处理全局的字符编码 -->
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<!-- 2.1 指定过滤范围 -->
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- 3.Restful API :将POST请求转化为DELETE或PUT,使用JS提交的方法如下： <form action="" method="POST"> 
+		<input type="hidden" name="_method" value="真正的请求参数"/> <form/> 在JS代码中， document.forms[0].action="";设置action值 
+		document.forms[0].submit();提交 -->
+	<filter>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+
+	<!-- 3.1 指定过滤范围 -->
+	<filter-mapping>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- 4.spring启动所需配置 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<!-- spring配置文件存放位置 -->
+		<param-value>classpath:spring/application-context.xml</param-value>
+	</context-param>
+
+	<!-- 4.1 上面需要ContextLoaderListener,下面配置 -->
+	<!-- 在应用启动的时候，自动启动，然后读取配置文件，构建上下文 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+</web-app>

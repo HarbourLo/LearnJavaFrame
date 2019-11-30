@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- mybatis已与spring整合，以下内容或者说该配置文件不会被扫描到 -->
+
+<configuration>
+	<!-- properties文件 -->
+	<properties resource="datasource.properties">
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</properties>
+	<!-- 别名:存放实体类的包名。用于减少类完全限定名的冗余 -->
+	<typeAliases>
+		<package name="tiga.hotal.pojo" />
+	</typeAliases>
+
+	<!-- 数据库环境 -->
+	<environments default="development">
+		<environment id="development">
+			<!-- 事务管理器:JDBC -->
+			<transactionManager type="JDBC"></transactionManager>
+			<!-- 数据源 -->
+			<dataSource type="POOLED">
+				<!-- 根据name值先从上面的<properties>中的属性匹配，再去resource的文件匹配 -->
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+	</environments>
+
+
+	<!-- 映射文件 -->
+	<mappers>
+		<mapper resource="ironman/kuma/bean/StudentScore.xml" />
+	</mappers>
+</configuration>
